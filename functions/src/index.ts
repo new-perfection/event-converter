@@ -20,7 +20,7 @@ const app = express()
 
 app.use(cors())
 
-app.post('/', (req, res) => {
+app.post('/helloWorld', (req, res) => {
   res.status(200).send({
     data: 'hello'
   });
