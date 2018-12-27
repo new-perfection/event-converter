@@ -44,21 +44,21 @@ class App extends Component {
 
     console.log(this.state)
 
-    const input = Object.keys(this.state.input).map(element => parseInt(this.state.input[element]))
-    const {
-      inputTimezone,
-      desiredTimezone
-    } = input
-    delete input.inputTimezone
-    delete input.desiredTimezone
+    // const input = Object.keys(this.state.input).map(element => parseInt(this.state.input[element]))
+    // const {
+    //   inputTimezone,
+    //   desiredTimezone
+    // } = input
+    // delete input.inputTimezone
+    // delete input.desiredTimezone
 
-    const request = {
-      data: {
-        inputTimezone,
-        desiredTimezone,
-        inputDate: input
-      }
-    }
+    // const request = {
+    //   data: {
+    //     inputTimezone,
+    //     desiredTimezone,
+    //     inputDate: input
+    //   }
+    // }
 
     const response = {
       "resultTimezone": 11,
