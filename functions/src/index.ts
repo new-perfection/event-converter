@@ -1,33 +1,42 @@
 import * as functions from 'firebase-functions'
 import * as express from 'express'
 import * as cors from 'cors'
-
+import { Parser } from './parser'
+import convert from "./converter"
+import * as input from "./input"
+import * as output from "./output"
 const app = express()
 
-// const allowedOrigins = [
-//   'https://event-converter.firebaseapp.com'
-// ]
-//
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if (allowedOrigins.indexOf(origin) !== -1) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   }
-// }))
-
 app.use(cors())
+app.use(express.json())
+app.post('/timeConverter', (req, res) => {
 
-app.post('/helloWorld', (req, res) => {
+  try {
+    var request = new input.RootObject();
+    request = req.body.data;
+  } catch (error) {
+    res.status(400).send("wrong request format");
+    return;
+  }
+  var parsed = new Parser(request);
+  var result = new output.OutputObject();
+  result.resultDate = new output.ResultDate();
+  if (!parsed.errors) {
+    var responseDate = convert(parsed.origin, request.inputTimezone, request.desiredTimezone);
+    result.resultDate.year = responseDate.getFullYear();
+    result.resultDate.month = responseDate.getMonth() + 1;
+    result.resultDate.day = responseDate.getDate();
+    result.resultDate.hour = responseDate.getHours();
+    result.resultDate.minute = responseDate.getMinutes();
+    result.resultTimezone = request.desiredTimezone;
+  } else {
+    res.status(400).send("something went wrong: " + parsed.errors + ", object input is:" + JSON.stringify(request) + "\n,output is: " + JSON.stringify(parsed) + "date converted is: " + convert(parsed.origin, request.inputTimezone, request.desiredTimezone));
+    return;
+  }
   res.status(200).send({
-    data: 'hello'
+    data: result
   });
+  return;
 })
 
 export const v1 = functions.https.onRequest(app)
-
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   response.send("Hello from Firebase!");
-// });
