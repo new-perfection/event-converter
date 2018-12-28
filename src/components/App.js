@@ -13,12 +13,12 @@ class App extends Component {
       result: 'loading',
 
       input: {
-        year: '',
-        month: '',
-        day: '',
-        hour: '',
-        minute: '',
-        inputTimezone: '',
+        year: '2018',
+        month: '12',
+        day: '27',
+        hour: '14',
+        minute: '16',
+        inputTimezone: '-5',
         desiredTimezone: ''
       },
 
@@ -120,8 +120,20 @@ class App extends Component {
     return (
       <div className="App">
         {this.state.result}
-        <form onSubmit={handleSubmit}>
-          {generateInputs(inputs)}
+        <form onSubmit={handleSubmit} autoComplete="off">
+          <div className="code input">
+            <input className="code" type="text" name="year" size="4" value={this.state.input.year} onChange={this.handleChange} />
+            /
+            <input className="code" type="text" name="month" size="2" value={this.state.input.month} onChange={this.handleChange} />
+            /
+            <input className="code" type="text" name="day" size="2" value={this.state.input.day} onChange={this.handleChange} />
+            <span> </span>
+            <input className="code" type="text" name="hour" size="2" value={this.state.input.hour} onChange={this.handleChange} />
+            :
+            <input className="code" type="text" name="minute" size="2" value={this.state.input.minute} onChange={this.handleChange} />
+            <span> GMT</span>
+            <input className="code" type="text" name="inputTimezone" size="3" value={this.state.input.inputTimezone} onChange={this.handleChange} />
+          </div>
           <div>
             <input type="submit" />
           </div>
