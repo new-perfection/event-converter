@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
 import './App.css'
 
-import { helloWorld } from '../functions'
+import { timeConverter } from '../functions'
 
 class App extends Component {
   constructor(props) {
     super(props)
 
-
-
     this.state = {
-      result: 'loading',
-
       input: {
         year: '',
         month: '',
@@ -27,52 +23,37 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    helloWorld().then(result => {
-      console.log(result.data)
-      this.setState({ result: result.data })
-    }).catch(function (error) {
-      // Getting the Error details.
-      console.log(error.code)
-      console.log(error.message)
-      console.log(error.details)
-    })
-  }
-
   handleSubmit = event => {
     event.preventDefault()
 
     console.log(this.state)
 
-    // const input = Object.keys(this.state.input).map(element => parseInt(this.state.input[element]))
-    // const {
-    //   inputTimezone,
-    //   desiredTimezone
-    // } = input
-    // delete input.inputTimezone
-    // delete input.desiredTimezone
+    let { input } = this.state
 
-    // const request = {
-    //   data: {
-    //     inputTimezone,
-    //     desiredTimezone,
-    //     inputDate: input
-    //   }
-    // }
-
-    const response = {
-      "resultTimezone": 11,
-      "resultDate": {
-        "year": 2018,
-        "month": 12,
-        "day": 7,
-        "hour": 23,
-        "minute": 30
+    Object.keys(input).forEach(key => {
+      input = {
+        ...input,
+        [key]: parseInt(input[key])
       }
+    })
+
+    const request = {
+      inputTimezone: input.inputTimezone,
+      desiredTimezone: input.desiredTimezone,
+      inputDate: input
     }
 
-    this.setState({
-      response
+    timeConverter(request).then(result => {
+      console.log(result)
+      const response = result.data
+      this.setState({
+        response
+      })
+    }).catch(function (error) {
+      // Getting the Error details.
+      console.log(error.code)
+      console.log(error.message)
+      console.log(error.details)
     })
 
   }
@@ -119,7 +100,6 @@ class App extends Component {
 
     return (
       <div className="App">
-        {this.state.result}
         <form onSubmit={handleSubmit}>
           {generateInputs(inputs)}
           <div>

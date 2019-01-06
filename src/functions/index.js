@@ -9,6 +9,6 @@ if (process.env.NODE_ENV === "development") {
   app.functions().useFunctionsEmulator('http://localhost:5000')
 }
 
-const helloWorld = app.functions().httpsCallable('v1/helloWorld')
+const timeConverter = app.functions().httpsCallable('v1/timeConverter')
 
-export { helloWorld }
+export { timeConverter }
