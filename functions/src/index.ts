@@ -11,18 +11,18 @@ app.use(cors())
 app.use(express.json())
 app.post('/timeConverter', (req, res) => {
 
+  let request = new input.RootObject();
   try {
-    var request = new input.RootObject();
     request = req.body.data;
   } catch (error) {
     res.status(400).send("wrong request format");
     return;
   }
-  var parsed = new Parser(request);
-  var result = new output.OutputObject();
+  let parsed = new Parser(request);
+  let result = new output.OutputObject();
   result.resultDate = new output.ResultDate();
   if (!parsed.errors) {
-    var responseDate = convert(parsed.origin, request.inputTimezone, request.desiredTimezone);
+    let responseDate = convert(parsed.origin, request.inputTimezone, request.desiredTimezone);
     result.resultDate.year = responseDate.getFullYear();
     result.resultDate.month = responseDate.getMonth() + 1;
     result.resultDate.day = responseDate.getDate();
